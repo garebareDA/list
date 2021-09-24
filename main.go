@@ -1,7 +1,5 @@
 package main
 
-//Go神に言われたことを考える(interface)
-
 import (
 	"github.com/gin-gonic/gin"
 	socketio "github.com/googollee/go-socket.io"
