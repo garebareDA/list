@@ -1,0 +1,5 @@
+development:
+    dialect: mysql
+    datasource: root@/list?parseTime=true
+    dir: migrations
+    table: migrations
