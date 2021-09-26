@@ -5,10 +5,12 @@ import {
     RouteComponentProps
 } from 'react-router-dom';
 
+import Home from './routes/Home'
+
 function Router() {
     return (
         <Switch>
-            <Route path='/' />
+            <Route path='/' exact component={Home} />
             <Route path='group/:group_id' />
         </Switch>
     );
