@@ -37,5 +37,22 @@ func (ctrl *GroupController) Create(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, group)
-	return
+}
+
+func (ctrl *GroupController) GetByName(c *gin.Context) {
+	id := c.Param("group_id")
+	if id == "" {
+		c.String(http.StatusBadRequest, "invald path paramater group_id")
+		ctrl.logger.Errorf("invald path paramter group_id: group_id=%s", id)
+		return
+	}
+
+	group, err := ctrl.repository.FindByID(id)
+	if err != nil {
+		c.String(http.StatusInternalServerError, err.Error())
+		ctrl.logger.Errorf("failed to get group by id %w", err)
+		return
+	}
+
+	c.JSON(http.StatusOK, group)
 }
