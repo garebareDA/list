@@ -28,6 +28,6 @@ const GlobalStyle = createGlobalStyle`
     width: 100%; height: 100%;
     content: "";
     z-index: -1;
-    background: linear-gradient(to bottom, #FFC778 0%, #f89174 100%);
+    background: linear-gradient(to bottom, #0077ff 0%, #2600ff 100%);
   }
 `
