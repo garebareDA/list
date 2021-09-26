@@ -1,3 +1,6 @@
+import styled from 'styled-components';
+
+
 function Home() {
     return (
         <div>
@@ -7,3 +10,7 @@ function Home() {
 }
 
 export default Home;
+
+const backGround = styled.div`
+    
+`
