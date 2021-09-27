@@ -20,15 +20,15 @@ const Chat: React.FC<Porps> = ({ me, sendTo }) => {
                 <Name>{me.name}</Name>
             </IconContainer>
 
-            <Message>{me.message}</Message>
 
+            <Message>{me.message}</Message>
             {sendTo
-                ? <div>
+                ? 
+                <div>
                     <img src={sendTo.img} alt="画像" />
                     <div>{sendTo.name}</div>
-                    <div>{sendTo.message}</div>
-                </div>
-                : <div/>
+                </d>
+                : <div />
             }
 
         </BackGround>
