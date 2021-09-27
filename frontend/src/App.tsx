@@ -18,16 +18,16 @@ function App() {
 export default App
 
 const GlobalStyle = createGlobalStyle`
-  html, body {
+    html, body {
     height:100%;
   }
 
-  body:after {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    content: "";
-    z-index: -1;
-    background: linear-gradient(to bottom, #0077ff 0%, #2600ff 100%);
-  }
+    body:after {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        content: "";
+        z-index: -1;
+        background: #d8d8d8
+    }
 `
