@@ -19,6 +19,7 @@ const Chat: React.FC<Porps> = ({ me, sendTo }) => {
                 <Icon src={me.img} alt="画像" />
                 <Name>{me.name}</Name>
             </IconContainer>
+
             <Message>{me.message}</Message>
 
             {sendTo
@@ -69,27 +70,4 @@ const Message = styled.div`
     border-radius: 0.3em;
     border-color: #dcdcdc;
     background-color: #ffffff;
-`
-const SendMessage = styled.div`
-    padding: 8px;
-    text-align:center
-`
-
-const SendMessageInput = styled.input`
-    border-radius: 1em;
-    border-width:1px;
-    border-style:solid;
-    border-color: #dcdcdc;
-    outline: none;
-    resize:none;
-`
-
-const SendMessageButton = styled.button`
-    margin:8px;
-    border-radius: 1em;
-    border-width:1px;
-    border-style:solid;
-    border-color: #dcdcdc;
-    outline: none;
-    resize:none;
 `
