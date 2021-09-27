@@ -27,7 +27,7 @@ const Chat: React.FC<Porps> = ({ me, sendTo }) => {
                 <div>
                     <img src={sendTo.img} alt="画像" />
                     <div>{sendTo.name}</div>
-                </d>
+                </div>
                 : <div />
             }
 
