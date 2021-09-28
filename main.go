@@ -1,6 +1,7 @@
 package main
 
 import (
+	"net/http"
 	"os"
 
 	"github.com/garebareDA/list/controller"
@@ -28,6 +29,7 @@ func main() {
 	groupRepo := repository.NewGroupReppsitory(dbMap)
 	groupCtrl := controller.NewGroupController(groupRepo, logger)
 
+
 	s := socketio.NewServer(nil)
 	go s.Serve()
 	defer s.Close()
@@ -39,9 +41,13 @@ func main() {
 	})
 
 	r := gin.Default()
+	r.LoadHTMLGlob("static/*.html")
+
+	r.GET("/", func(c *gin.Context) {c.HTML(http.StatusOK, "index.html", gin.H{})})
+
 	r.GET("/socket.io/", gin.WrapH(s))
 	r.POST("/socket.io/", func(context *gin.Context) { s.ServeHTTP(context.Writer, context.Request) })
-	r.Static("/", "./static")
+	r.Static("/assets", "./static/assets")
 
 	api := r.Group("/api")
 	api.POST("/group", groupCtrl.Create)

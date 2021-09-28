@@ -1,14 +1,44 @@
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
 import Chat from '../components/Chat';
 
 function Home() {
+    const [room, setRoom] = useState("");
+    const history = useHistory();
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRoom(event.target.value);
+    }
+
+    const onClickRoom = () => {
+        fetch('/api/group', {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            redirect: 'follow', 
+            referrerPolicy: 'no-referrer',
+            body: JSON.stringify({
+                name:room,
+            })
+        }).then((res) => {
+            res.json().then((json) => {
+                history.push("/group/" + json.id);
+            });
+            
+        })
+    }
+
     return (
         <div>
             <AutoCenter>
                 <TitleText> ListChat </TitleText>
-                <TextArea maxLength={32} placeholder="ルーム名"></TextArea>
-                <RoomCreateButton>ルームを作成</RoomCreateButton>
+                <TextArea maxLength={32} placeholder="ルーム名" onChange={handleChange} ></TextArea>
+                <RoomCreateButton onClick={onClickRoom} disabled={room == ""}>ルームを作成</RoomCreateButton>
             </AutoCenter>
             <PreviewChat>
                 <Chat me={{ img: "https://pbs.twimg.com/profile_images/1437747193234944002/a9f_91G8_400x400.jpg", name: "ガレバレ", message: "たぶん、リアルタイムなチャットです" }} sendTo={null} />
@@ -30,7 +60,7 @@ const TitleText = styled.div`
 const TextArea = styled.input`
     box-shadow: 0 1px 25px 0 rgba(0, 0, 0, .5);
     border-radius: 1em;
-    padding: 1em;
+    padding: 1em;  
     background-color: snow;
     width: 50%;
     max-width: 512px;
@@ -54,6 +84,19 @@ const RoomCreateButton = styled.button`
     color:white;
     background-color: #005eff;
     margin: 8px;
+
+    :hover {
+        background-color: #054ecb;
+    };
+
+    :active {
+        background-color: #005eff;
+    };
+
+    :disabled {
+        color: gray;
+        background-color: #bababa;
+    }
 `
 
 const AutoCenter = styled.div`

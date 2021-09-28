@@ -6,12 +6,13 @@ import {
 } from 'react-router-dom';
 
 import Home from './routes/Home'
+import Group from './routes/Group'
 
 function Router() {
     return (
         <Switch>
             <Route path='/' exact component={Home} />
-            <Route path='group/:group_id' />
+            <Route path='/group/:groupID' component={Group}/>
         </Switch>
     );
 }

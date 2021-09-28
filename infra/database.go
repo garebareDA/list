@@ -4,12 +4,13 @@ import (
 	"database/sql"
 	"fmt"
 	"time"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/go-gorp/gorp"
 	"github.com/garebareDA/list/log"
 )
 
 func NewDB() (*gorp.DbMap, error) {
-	db, err := sql.Open("mysql", "")
+	db, err := sql.Open("mysql", "root:@tcp(localhost:3306)/list?parseTime=true")
 	if err != nil {
 		return nil, fmt.Errorf("failed to open Mysql: %w", err)
 	}

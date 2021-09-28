@@ -19,8 +19,6 @@ const Chat: React.FC<Porps> = ({ me, sendTo }) => {
                 <Icon src={me.img} alt="画像" />
                 <Name>{me.name}</Name>
             </IconContainer>
-
-
             <Message>{me.message}</Message>
             {sendTo
                 ? 
