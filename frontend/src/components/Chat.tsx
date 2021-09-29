@@ -21,7 +21,7 @@ const Chat: React.FC<Porps> = ({ me, sendTo }) => {
             </IconContainer>
             <Message>{me.message}</Message>
             {sendTo
-                ? 
+                ?
                 <div>
                     <img src={sendTo.img} alt="画像" />
                     <div>{sendTo.name}</div>

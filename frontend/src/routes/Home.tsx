@@ -102,7 +102,7 @@ const RoomCreateButton = styled.button`
 const AutoCenter = styled.div`
     text-align:center;
     padding-top:128px;
-    padding-bottom: 80px;    
+    padding-bottom: 80px;
 `
 
 const PreviewChat = styled.div`
