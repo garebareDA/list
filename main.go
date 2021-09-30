@@ -31,8 +31,6 @@ func main() {
 
 
 	s := socketio.NewServer(nil)
-	go s.Serve()
-	defer s.Close()
 
 	s.OnConnect("/", func(c socketio.Conn) error {
 		c.SetContext("")
@@ -40,13 +38,20 @@ func main() {
 		return nil
 	})
 
+	s.OnError("/", func(c socketio.Conn,e error) {
+		logger.Printf("meet error:%s", e)
+	})
+
+	go s.Serve()
+	defer s.Close()
+
 	r := gin.Default()
 	r.LoadHTMLGlob("static/*.html")
 
 	r.GET("/", func(c *gin.Context) {c.HTML(http.StatusOK, "index.html", gin.H{})})
 
-	r.GET("/socket.io/", gin.WrapH(s))
-	r.POST("/socket.io/", func(context *gin.Context) { s.ServeHTTP(context.Writer, context.Request) })
+	r.GET("/socket.io/*any", gin.WrapH(s))
+	r.POST("/socket.io/*any", gin.WrapH(s))
 	r.Static("/assets", "./static/assets")
 
 	api := r.Group("/api")

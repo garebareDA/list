@@ -1,5 +1,6 @@
 .PHONY:run
 run:
+	npm run build --prefix frontend
 	go run main.go
 
 .PHONY: create-db
@@ -10,5 +11,5 @@ drop-db:
 	sql-migrate down
 
 .PHONY: start-db
-drop-db:
+start-db:
 	service mysql start

@@ -29,7 +29,6 @@ function Home() {
             res.json().then((json) => {
                 history.push("/group/" + json.id);
             });
-            
         })
     }
 
@@ -60,7 +59,7 @@ const TitleText = styled.div`
 const TextArea = styled.input`
     box-shadow: 0 1px 25px 0 rgba(0, 0, 0, .5);
     border-radius: 1em;
-    padding: 1em;  
+    padding: 1em;
     background-color: snow;
     width: 50%;
     max-width: 512px;

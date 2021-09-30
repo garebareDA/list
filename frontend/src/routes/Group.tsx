@@ -4,13 +4,26 @@ import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
 import * as clipboard from "clipboard-polyfill/text";
+import io from "socket.io-client";
 
 import Chat from '../components/Chat';
+import ModalInput from '../components/ModalInput';
 
 function Group() {
     const [room, setRoom] = useState("example");
     const [copy, setCopy] = useState("リンクをコピー");
+    const [modal, setModal] = useState(true);
+    const [socket, setSocket] = useState(io("http://localhost:8000/"));
     const { groupID } = useParams<{ groupID: string }>();
+
+    socket.io.on("error", (error:any) => {
+        console.log(error);
+    });
+
+    socket.on("connect_error", (err:any) => {
+        console.log(`connect_error due to ${err.message}`);
+    });
+
     const copyOnlick = () => {
         clipboard.writeText(location.href).then(
             () => {
@@ -19,6 +32,13 @@ function Group() {
             },
             () => { setCopy("コピーエラー！") }
         );
+    }
+
+    const CloseModal = () => {
+        console.log("aaaaa");
+        setModal(false);
+        socket.connect();
+        socket.emit("join", room);
     }
 
     fetch('/api/group/' + groupID, {
@@ -30,18 +50,25 @@ function Group() {
     }).then((res) => {
         res.json().then((json) => {
             setRoom(json.name);
+            const icon = localStorage.getItem(room + "/icon");
+            const name = localStorage.getItem(room + "/name");
+            if (icon == null || icon == "" || name == null || name == "") {
+                setModal(true);
+            } else {
+                CloseModal();
+            }
         });
     });
 
     return (
         <div>
-            
+            <ModalInput isOpen={modal} roomName={room} Close={CloseModal} />
             <FrexContainer>
                 <RoomName>{room}</RoomName>
                 <CopyButton onClick={copyOnlick}>{copy}</CopyButton>
             </FrexContainer>
             <FlextContainerChat>
-                
+
             </FlextContainerChat>
         </div>
     )
