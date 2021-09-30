@@ -29,8 +29,16 @@ func main() {
 	groupRepo := repository.NewGroupReppsitory(dbMap)
 	groupCtrl := controller.NewGroupController(groupRepo, logger)
 
-
 	s := socketio.NewServer(nil)
+
+	s.OnEvent("/", "join", func(c socketio.Conn, msg string) {
+		logger.Printf(msg)
+		c.Join(msg)
+	})
+
+	s.OnEvent("/", "message",  func(c socketio.Conn, msg string) {
+		logger.Printf(msg)
+	})
 
 	s.OnConnect("/", func(c socketio.Conn) error {
 		c.SetContext("")
@@ -38,7 +46,7 @@ func main() {
 		return nil
 	})
 
-	s.OnError("/", func(c socketio.Conn,e error) {
+	s.OnError("/", func(c socketio.Conn, e error) {
 		logger.Printf("meet error:%s", e)
 	})
 
@@ -48,7 +56,7 @@ func main() {
 	r := gin.Default()
 	r.LoadHTMLGlob("static/*.html")
 
-	r.GET("/", func(c *gin.Context) {c.HTML(http.StatusOK, "index.html", gin.H{})})
+	r.GET("/", func(c *gin.Context) { c.HTML(http.StatusOK, "index.html", gin.H{}) })
 
 	r.GET("/socket.io/*any", gin.WrapH(s))
 	r.POST("/socket.io/*any", gin.WrapH(s))
