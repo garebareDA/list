@@ -9,10 +9,12 @@ import socketio from '../lib/socket';
 import Chat from '../components/Chat';
 import ModalInput from '../components/ModalInput';
 
-type User = {
+interface User {
     id: string,
     name: string,
     icon: string,
+    room: string,
+    message: string,
 }
 
 function Group() {
@@ -43,9 +45,14 @@ function Group() {
     }, []);
 
     useEffect(() => {
-        //Socket.ioのメッセージ送信
-        console.log(message);
-        socket.emit("message", message);
+        const user: User = {
+            id: id,
+            name: name,
+            icon: icon,
+            room: groupID,
+            message: message,
+        }
+        socket.emit("message", JSON.stringify(user));
     }, [message])
 
     const copyOnlick = () => {
@@ -74,8 +81,27 @@ function Group() {
         setName(name);
         setID(id);
         setModal(false);
-        socket.emit("join", groupID);
+        const user: User = {
+            id: id,
+            name: name,
+            icon: icon,
+            room: groupID,
+            message: message,
+        }
+        socket.emit("join", JSON.stringify(user));
     }
+
+    socket.on("join", () => {
+        
+    })
+
+    socket.on("message", () => {
+        
+    })
+
+    socket.on("members", () => {
+        
+    })
 
     return (
         <div>

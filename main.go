@@ -13,6 +13,7 @@ import (
 )
 
 func main() {
+	s := socketio.NewServer(nil)
 	logger := log.New()
 	dbMap, err := infra.NewDB()
 	if err != nil {
@@ -29,16 +30,10 @@ func main() {
 	groupRepo := repository.NewGroupReppsitory(dbMap)
 	groupCtrl := controller.NewGroupController(groupRepo, logger)
 
-	s := socketio.NewServer(nil)
+	userCtrl := controller.NewUserController( s, logger)
 
-	s.OnEvent("/", "join", func(c socketio.Conn, msg string) {
-		logger.Printf(msg)
-		c.Join(msg)
-	})
-
-	s.OnEvent("/", "message",  func(c socketio.Conn, msg string) {
-		logger.Printf(msg)
-	})
+	s.OnEvent("/", "message", userCtrl.Message)
+	s.OnEvent("/", "join", userCtrl.Join)
 
 	s.OnConnect("/", func(c socketio.Conn) error {
 		c.SetContext("")

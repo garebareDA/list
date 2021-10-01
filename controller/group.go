@@ -27,6 +27,7 @@ func (ctrl *GroupController) Create(c *gin.Context) {
 	if err != nil {
 		c.String(http.StatusBadRequest, err.Error())
 		ctrl.logger.Errorf("failed to create group: %v\n", err)
+		return
 	}
 
 	group.NewID()
