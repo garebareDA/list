@@ -1,28 +1,52 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
 import * as clipboard from "clipboard-polyfill/text";
-import io from "socket.io-client";
+import socketio from '../lib/socket';
 
 import Chat from '../components/Chat';
 import ModalInput from '../components/ModalInput';
 
+type User = {
+    id: string,
+    name: string,
+    icon: string,
+}
+
 function Group() {
     const [room, setRoom] = useState("example");
     const [copy, setCopy] = useState("リンクをコピー");
+    const [icon, setIcon] = useState("");
+    const [name, setName] = useState("");
+    const [id, setID] = useState("");
+    const [message, setMessage] = useState("");
     const [modal, setModal] = useState(true);
-    const [socket, setSocket] = useState(io("http://localhost:8000/"));
+    const [socket, setSocket] = useState(socketio);
     const { groupID } = useParams<{ groupID: string }>();
+    let userList: User[] = [];
 
-    socket.io.on("error", (error:any) => {
-        console.log(error);
-    });
+    useEffect(() => {
+        fetch('/api/group/' + groupID, {
+            method: 'GET',
+            mode: 'cors',
+            cache: 'no-cache',
+            redirect: 'follow',
+            referrerPolicy: 'no-referrer',
+        }).then((res) => {
+            res.json().then((json) => {
+                setRoom(json.name);
+                SetUser();
+            });
+        });
+    }, []);
 
-    socket.on("connect_error", (err:any) => {
-        console.log(`connect_error due to ${err.message}`);
-    });
+    useEffect(() => {
+        //Socket.ioのメッセージ送信
+        console.log(message);
+        socket.emit("message", message);
+    }, [message])
 
     const copyOnlick = () => {
         clipboard.writeText(location.href).then(
@@ -34,41 +58,45 @@ function Group() {
         );
     }
 
-    const CloseModal = () => {
-        console.log("aaaaa");
-        setModal(false);
-        socket.connect();
-        socket.emit("join", room);
-    }
+    const SetUser = () => {
+        const icon = localStorage.getItem(groupID + "/icon");
+        const name = localStorage.getItem(groupID + "/name");
+        const id = localStorage.getItem(groupID + "/id");
+        if (icon == null || icon == ""
+            || name == null || name == ""
+            || id == null || id == "") {
+            setModal(true);
+            return
+        }
 
-    fetch('/api/group/' + groupID, {
-        method: 'GET',
-        mode: 'cors',
-        cache: 'no-cache',
-        redirect: 'follow',
-        referrerPolicy: 'no-referrer',
-    }).then((res) => {
-        res.json().then((json) => {
-            setRoom(json.name);
-            const icon = localStorage.getItem(room + "/icon");
-            const name = localStorage.getItem(room + "/name");
-            if (icon == null || icon == "" || name == null || name == "") {
-                setModal(true);
-            } else {
-                CloseModal();
-            }
-        });
-    });
+        setModal(false);
+        setIcon(icon);
+        setName(name);
+        setID(id);
+        setModal(false);
+        socket.emit("join", groupID);
+    }
 
     return (
         <div>
-            <ModalInput isOpen={modal} roomName={room} Close={CloseModal} />
+            <ModalInput isOpen={modal} roomName={groupID} Close={SetUser} />
             <FrexContainer>
                 <RoomName>{room}</RoomName>
                 <CopyButton onClick={copyOnlick}>{copy}</CopyButton>
             </FrexContainer>
             <FlextContainerChat>
+                {
+                    modal
+                        ? <div />
+                        : <Chat user={{ img: icon, name: name, message: "" }} sendTo={null} send={{ setMessage: setMessage, message: message }} />
+                }
 
+                {
+
+                    modal
+                        ? <div />
+                        : <div />
+                }
             </FlextContainerChat>
         </div>
     )

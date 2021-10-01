@@ -50,7 +50,11 @@ func main() {
 		logger.Printf("meet error:%s", e)
 	})
 
-	go s.Serve()
+	go func() {
+		if err := s.Serve(); err != nil {
+			logger.Fatalf("socketio listen error: %s\n", err)
+		}
+	}()
 	defer s.Close()
 
 	r := gin.Default()

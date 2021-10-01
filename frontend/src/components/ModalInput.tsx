@@ -1,7 +1,7 @@
 import Modal from 'react-modal'
 import React, { useState } from 'react';
 import styled from 'styled-components';
-
+import { v4 as uuidv4 } from 'uuid';
 
 type Props = {
     isOpen: boolean,
@@ -29,6 +29,7 @@ const ModalInput: React.FC<Props> = (Props) => {
         if (icon != "" && name != "") {
             localStorage.setItem(Props.roomName + "/icon", icon);
             localStorage.setItem(Props.roomName + "/name", name);
+            localStorage.setItem(Props.roomName + "/id", uuidv4());
             Props.Close(false);
         }
     }
