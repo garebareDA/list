@@ -31,7 +31,7 @@ const ModalInput: React.FC<Props> = (Props) => {
     const submit = () => {
         if (icon != "" && name != "") {
             localStorage.setItem(Props.roomName + "/icon", icon);
-            localStorage.setItem(Props.roomName + "/name", name);
+            localStorage.setItem(Props.roomName + "/name", name.slice(0, 28));
             localStorage.setItem(Props.roomName + "/id", uuidv4());
             Props.Close(false);
         }
@@ -44,7 +44,7 @@ const ModalInput: React.FC<Props> = (Props) => {
             </Padding>
 
             <Text>名前:</Text>
-            <InputTextArea type="text" onChange={handleName} />
+            <InputTextArea maxLength={28} type="text" onChange={handleName} />
 
             <Text>アイコンURL:</Text>
             <Notes>*自動で中央に収縮されます</Notes>

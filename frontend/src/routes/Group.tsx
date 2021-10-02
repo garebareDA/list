@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
@@ -77,12 +77,12 @@ function Group() {
 
         setModal(false);
         setIcon(icon);
-        setName(name);
+        setName(name.slice(0, 28));
         setID(id);
         setModal(false);
         const user: User = {
             id: id,
-            name: name,
+            name: name.slice(0, 28),
             icon: icon,
             room: groupID,
             message: message,
