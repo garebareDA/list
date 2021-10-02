@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import Modal from 'react-modal';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
@@ -8,6 +7,7 @@ import socketio from '../lib/socket';
 
 import Chat from '../components/Chat';
 import ModalInput from '../components/ModalInput';
+import ModalError from '../components/ModalError'
 
 interface User {
     id: string,
@@ -18,7 +18,7 @@ interface User {
 }
 
 function Group() {
-    const [room, setRoom] = useState("example");
+    const [room, setRoom] = useState("NotFound");
     const [copy, setCopy] = useState("リンクをコピー");
     const [icon, setIcon] = useState("");
     const [name, setName] = useState("");
@@ -26,12 +26,16 @@ function Group() {
     const [message, setMessage] = useState("");
     const [modal, setModal] = useState(true);
     const [socket, setSocket] = useState(socketio);
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const { groupID } = useParams<{ groupID: string }>();
     const [users, setUsers] = useState<{ [key: string]: User }>({});
 
     useEffect(() => {
         socket.on("error", (err: any) => {
             console.log(err)
+            setErrorMessage("接続エラー");
+            setError(true);
         })
 
         fetch('/api/group/' + groupID, {
@@ -41,10 +45,15 @@ function Group() {
             redirect: 'follow',
             referrerPolicy: 'no-referrer',
         }).then((res) => {
-            res.json().then((json) => {
-                setRoom(json.name);
-                SetUser();
-            });
+            return res.json();
+        }).then((data:User) => {
+            setRoom(data.name);
+            SetUser();
+        }).catch((error) => {
+            console.log(error);
+            console.log("error");
+            setErrorMessage("このルームは存在していません");
+            setError(true);
         });
     }, []);
 
@@ -112,7 +121,8 @@ function Group() {
 
     return (
         <div>
-            <ModalInput isOpen={modal} roomName={groupID} Close={SetUser} />
+            <ModalError open={error} message={errorMessage} />
+            <ModalInput isOpen={modal && !error} roomName={groupID} Close={SetUser} />
             <FrexContainer>
                 <RoomName>{room}</RoomName>
                 <CopyButton onClick={copyOnlick}>{copy}</CopyButton>

@@ -38,7 +38,7 @@ const ModalInput: React.FC<Props> = (Props) => {
     }
 
     return (
-        <Modal isOpen={Props.isOpen} style={customStyles}>
+        <Modal isOpen={Props.isOpen} style={customStyles} ariaHideApp={false}>
             <Padding>
                 <div>ユーザー設定をしてください</div>
             </Padding>
