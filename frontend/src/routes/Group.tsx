@@ -27,9 +27,13 @@ function Group() {
     const [modal, setModal] = useState(true);
     const [socket, setSocket] = useState(socketio);
     const { groupID } = useParams<{ groupID: string }>();
-    let userList: User[] = [];
+    let userList: { [key: string]: User; }  = {};
 
     useEffect(() => {
+        socket.on("message", (msg:string) => {
+            console.log(msg);
+        })
+
         fetch('/api/group/' + groupID, {
             method: 'GET',
             mode: 'cors',
@@ -90,18 +94,6 @@ function Group() {
         }
         socket.emit("join", JSON.stringify(user));
     }
-
-    socket.on("join", () => {
-        
-    })
-
-    socket.on("message", () => {
-        
-    })
-
-    socket.on("members", () => {
-        
-    })
 
     return (
         <div>

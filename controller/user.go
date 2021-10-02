@@ -27,7 +27,7 @@ func (ctrl *UserController) Message(c socketio.Conn, msg string) {
 		ctrl.logger.Errorf("failed to message parse json: %v\n", err)
 		c.Close()
 	}
-	ctrl.server.BroadcastToRoom("/", user.Room, "message", user.Message)
+	ctrl.server.BroadcastToRoom("/", user.Room, "message", msg)
 }
 
 func (ctrl *UserController) Join(c socketio.Conn, msg string) {
@@ -37,7 +37,6 @@ func (ctrl *UserController) Join(c socketio.Conn, msg string) {
 		ctrl.logger.Errorf("failed to message parse json: %v\n", err)
 		c.Close()
 	}
-	
 	c.Join(user.Room)
 	ctrl.server.BroadcastToRoom("/", user.Room, "join", msg)
 }
