@@ -30,13 +30,13 @@ func main() {
 	groupRepo := repository.NewGroupReppsitory(dbMap)
 	groupCtrl := controller.NewGroupController(groupRepo, logger)
 
-	userCtrl := controller.NewUserController( s, logger)
+	userCtrl := controller.NewUserController(s, logger)
 
 	s.OnEvent("/", "message", userCtrl.Message)
 	s.OnEvent("/", "join", userCtrl.Join)
+	s.OnDisconnect("/", userCtrl.Disconnect)
 
 	s.OnConnect("/", func(c socketio.Conn) error {
-		c.SetContext("")
 		logger.Printf("Connected ID : %s\n", c.ID())
 		return nil
 	})

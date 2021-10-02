@@ -73,4 +73,3 @@ const customStyles = {
         transform: 'translate(-50%, -50%)',
     },
 };
-

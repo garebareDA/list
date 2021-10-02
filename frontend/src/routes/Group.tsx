@@ -22,7 +22,6 @@ function Group() {
     const [copy, setCopy] = useState("リンクをコピー");
     const [icon, setIcon] = useState("");
     const [name, setName] = useState("");
-    const [id, setID] = useState("");
     const [message, setMessage] = useState("");
     const [modal, setModal] = useState(true);
     const [socket, setSocket] = useState(socketio);
@@ -33,9 +32,13 @@ function Group() {
 
     useEffect(() => {
         socket.on("error", (err: any) => {
-            console.log(err)
+            console.error(err)
             setErrorMessage("接続エラー");
             setError(true);
+        })
+
+        socket.on("disconnect", (msg: any) => {
+            console.log(msg)
         })
 
         fetch('/api/group/' + groupID, {
@@ -46,12 +49,11 @@ function Group() {
             referrerPolicy: 'no-referrer',
         }).then((res) => {
             return res.json();
-        }).then((data:User) => {
+        }).then((data: User) => {
             setRoom(data.name);
             SetUser();
         }).catch((error) => {
-            console.log(error);
-            console.log("error");
+            console.error(error);
             setErrorMessage("このルームは存在していません");
             setError(true);
         });
@@ -64,7 +66,7 @@ function Group() {
     const sendMessage = () => {
         if (message.length > 128) return;
         const user: User = {
-            id: id,
+            id: socket.id,
             name: name,
             icon: icon,
             room: groupID,
@@ -76,10 +78,8 @@ function Group() {
     const SetUser = () => {
         const icon = localStorage.getItem(groupID + "/icon");
         const name = localStorage.getItem(groupID + "/name");
-        const id = localStorage.getItem(groupID + "/id");
         if (icon == null || icon == ""
-            || name == null || name == ""
-            || id == null || id == "") {
+            || name == null || name == "") {
             setModal(true);
             return
         }
@@ -87,10 +87,8 @@ function Group() {
         setModal(false);
         setIcon(icon);
         setName(name.slice(0, 28));
-        setID(id);
-        setModal(false);
         const user: User = {
-            id: id,
+            id: socket.id,
             name: name.slice(0, 28),
             icon: icon,
             room: groupID,
@@ -98,9 +96,15 @@ function Group() {
         }
 
         socket.emit("join", JSON.stringify(user));
+
+        socket.on("quit", (msg: string) => {
+            delete users[msg]
+            setUsers(users);
+        });
+
         socket.on("message", (msg: string) => {
             const user: User = JSON.parse(msg);
-            if (user.id == id) return;
+            if (user.id == socket.id) return;
             setUsers({ ...users, [user.id]: user });
         });
 
@@ -139,8 +143,6 @@ function Group() {
                         ? <div />
                         : Object.keys(users).map((key, index) => {
                             const user = users[key];
-                            console.log(user);
-                            console.log(Object.keys(users).length);
                             return <Chat user={{ img: user.icon, name: user.name, message: user.message }} sendTo={null} send={null} />
                         })
                 }
