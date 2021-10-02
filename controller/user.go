@@ -38,5 +38,5 @@ func (ctrl *UserController) Join(c socketio.Conn, msg string) {
 		c.Close()
 	}
 	c.Join(user.Room)
-	ctrl.server.BroadcastToRoom("/", user.Room, "join", msg)
+	ctrl.server.BroadcastToRoom("/", user.Room, "members", msg)
 }

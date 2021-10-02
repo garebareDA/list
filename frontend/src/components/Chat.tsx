@@ -101,6 +101,7 @@ const Message = styled.div`
     border-radius: 0.3em;
     border-color: #dcdcdc;
     background-color: #ffffff;
+    word-wrap: break-word;
 `
 
 const TextArea = styled.textarea`

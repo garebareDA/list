@@ -18,11 +18,14 @@ const ModalInput: React.FC<Props> = (Props) => {
     }
 
     const handleIcon = (event: React.ChangeEvent<HTMLInputElement>) => {
-        fetch(event.target.value).then((res) => {
-            if(res.status == 200) {
-                setIcon(event.target.value);
-            }
-        });
+        const fileType = event.target.value.split('.').pop();
+        if (fileType == "png" || fileType == "jpg" || fileType == "jpeg" || fileType == "gif") {
+            fetch(event.target.value).then((res) => {
+                if (res.status == 200) {
+                    setIcon(event.target.value);
+                }
+            });
+        }
     }
 
     const submit = () => {

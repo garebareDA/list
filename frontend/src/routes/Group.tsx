@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Modal from 'react-modal';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
@@ -27,11 +27,11 @@ function Group() {
     const [modal, setModal] = useState(true);
     const [socket, setSocket] = useState(socketio);
     const { groupID } = useParams<{ groupID: string }>();
-    let userList: { [key: string]: User; }  = {};
+    const [users, setUsers] = useState<{ [key: string]: User }>({});
 
     useEffect(() => {
-        socket.on("message", (msg:string) => {
-            console.log(msg);
+        socket.on("error", (err: any) => {
+            console.log(err)
         })
 
         fetch('/api/group/' + groupID, {
@@ -49,24 +49,19 @@ function Group() {
     }, []);
 
     useEffect(() => {
+        sendMessage();
+    }, [message])
+
+    const sendMessage = () => {
+        if (message.length > 128) return;
         const user: User = {
             id: id,
             name: name,
             icon: icon,
             room: groupID,
-            message: message,
+            message: message.slice(0, 128),
         }
         socket.emit("message", JSON.stringify(user));
-    }, [message])
-
-    const copyOnlick = () => {
-        clipboard.writeText(location.href).then(
-            () => {
-                setTimeout(() => { setCopy("リンクをコピー!") }, 5000);
-                setCopy("コピーした！");
-            },
-            () => { setCopy("コピーエラー！") }
-        );
     }
 
     const SetUser = () => {
@@ -92,7 +87,27 @@ function Group() {
             room: groupID,
             message: message,
         }
+
         socket.emit("join", JSON.stringify(user));
+        socket.on("message", (msg: string) => {
+            const user: User = JSON.parse(msg);
+            if (user.id == id) return;
+            setUsers({ ...users, [user.id]: user });
+        });
+
+        socket.on("members", () => {
+            socket.emit("message", JSON.stringify(user));
+        });
+    }
+
+    const copyOnlick = () => {
+        clipboard.writeText(location.href).then(
+            () => {
+                setTimeout(() => { setCopy("リンクをコピー!") }, 5000);
+                setCopy("コピーした！");
+            },
+            () => { setCopy("コピーエラー！") }
+        );
     }
 
     return (
@@ -110,10 +125,14 @@ function Group() {
                 }
 
                 {
-
-                    modal
+                    modal && Object.keys(users).length > 0
                         ? <div />
-                        : <div />
+                        : Object.keys(users).map((key, index) => {
+                            const user = users[key];
+                            console.log(user);
+                            console.log(Object.keys(users).length);
+                            return <Chat user={{ img: user.icon, name: user.name, message: user.message }} sendTo={null} send={null} />
+                        })
                 }
             </FlextContainerChat>
         </div>
@@ -155,5 +174,7 @@ const FrexContainer = styled.div`
 
 const FlextContainerChat = styled.div`
     display:flex;
+    flex-wrap:wrap;
     justify-content: center;
+    align-items: center;
 `
