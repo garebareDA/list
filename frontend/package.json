@@ -4,13 +4,18 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build --emptyOutDir",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "test": "jest"
   },
   "dependencies": {
     "react": "^17.0.0",
     "react-dom": "^17.0.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.1.2",
+    "@types/enzyme": "^3.10.9",
+    "@types/jest": "^27.0.2",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-modal": "^3.12.1",
@@ -19,12 +24,30 @@
     "@types/styled-components": "^5.1.14",
     "@vitejs/plugin-react": "^1.0.0",
     "clipboard-polyfill": "^3.0.3",
+    "enzyme": "^3.11.0",
+    "jest": "^27.2.4",
     "react-modal": "^3.14.3",
     "react-router": "^5.2.1",
     "react-router-dom": "^5.3.0",
     "socket.io-client": "^2.4.0",
     "styled-components": "^5.3.1",
+    "ts-jest": "^27.0.5",
     "typescript": "^4.3.2",
     "vite": "^2.5.4"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testEnvironment": "jsdom",
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   }
 }

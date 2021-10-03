@@ -47,7 +47,7 @@ const Chat: React.FC<Porps> = ({ user, sendTo, send }) => {
                     <TextArea maxLength={128} onChange={handleCount} onKeyPress={handlekeyPress} value={send.message}></TextArea>
                     <TextDitailContainer>
                         <div>128/{count}</div>
-                        <RemoveButton onClick={handleRemove}>R</RemoveButton>
+                        <RemoveButton onClick={handleRemove}>{">"}</RemoveButton>
                     </TextDitailContainer>
                 </div>
                 : <Message>{user.message}</Message>

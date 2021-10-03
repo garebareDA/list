@@ -25,10 +25,11 @@ function Home() {
             body: JSON.stringify({
                 name: room,
             })
-        }).then((res) => {
-            res.json().then((json) => {
-                history.push("/group/" + json.id);
-            });
+        }).then((res) => res.json()
+        ).then((json) => {
+            history.push("/group/" + json.id);
+        }).catch((error) => {
+            console.error(error);
         })
     }
 
