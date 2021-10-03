@@ -108,7 +108,8 @@ function Group() {
             setUsers({ ...users, [user.id]: user });
         });
 
-        socket.on("members", () => {
+        socket.on("members", (id:string) => {
+            if (id == socket.id) return;
             socket.emit("message", JSON.stringify(user));
         });
     }

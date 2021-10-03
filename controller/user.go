@@ -41,7 +41,7 @@ func (ctrl *UserController) Join(c socketio.Conn, msg string) {
 
 	c.Join(user.Room)
 	ctrl.room[c.ID()] = user.Room
-	ctrl.server.BroadcastToRoom("/", user.Room, "members", msg)
+	ctrl.server.BroadcastToRoom("/", user.Room, "members", c.ID())
 }
 
 func (ctrl *UserController) Disconnect(c socketio.Conn, mst string) {
