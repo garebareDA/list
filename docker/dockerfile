@@ -24,11 +24,15 @@ RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt install -y nodejs
 RUN npm install npm@latest -g
 
+RUN service mysql start
+
 COPY . .
 
 WORKDIR /home/${USER}/flontend
 RUN npm install
 
 WORKDIR /home/${USER}
+RUN go get -v github.com/rubenv/sql-migrate/...
+RUN make create-db
 
 CMD ["make", "run"]

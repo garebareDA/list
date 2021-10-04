@@ -1,4 +1,4 @@
-import * as Modal from 'react-modal'
+const Modal = require('react-modal');
 import React, { useState } from 'react';
 import styled from 'styled-components';
 

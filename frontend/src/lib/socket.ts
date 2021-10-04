@@ -1,4 +1,4 @@
-import *  as io from "socket.io-client";
+const io:SocketIOClientStatic = require("socket.io-client");
 const socket = io("/", {
     transports:["websocket"]
 });

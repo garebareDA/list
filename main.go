@@ -8,6 +8,7 @@ import (
 	"github.com/garebareDA/list/infra"
 	"github.com/garebareDA/list/log"
 	"github.com/garebareDA/list/repository"
+	"github.com/garebareDA/list/config"
 	"github.com/gin-gonic/gin"
 	socketio "github.com/googollee/go-socket.io"
 )
@@ -65,5 +66,5 @@ func main() {
 	api.POST("/group", groupCtrl.Create)
 	api.GET("/group/:group_id", groupCtrl.GetByName)
 
-	r.Run(":8000")
+	r.Run(config.Port())
 }

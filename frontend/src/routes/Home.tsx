@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 
 import Chat from '../components/Chat';
 
+import Icon from '../../image/garebaremin-export.png'
+
 function Home() {
     const [room, setRoom] = useState("");
     const history = useHistory();
@@ -41,9 +43,9 @@ function Home() {
                 <RoomCreateButton onClick={onClickRoom} disabled={room == ""}>ルームを作成</RoomCreateButton>
             </AutoCenter>
             <PreviewChat>
-                <Chat user={{ img: "https://pbs.twimg.com/profile_images/1437747193234944002/a9f_91G8_400x400.jpg", name: "ガレバレ", message: "たぶん、リアルタイムなチャットです" }} sendTo={null} send={null} />
-                <Chat user={{ img: "https://pbs.twimg.com/profile_images/1437747193234944002/a9f_91G8_400x400.jpg", name: "ガレバレ", message: "たぶん、一覧で表示されます" }} sendTo={null} send={null} />
-                <Chat user={{ img: "https://pbs.twimg.com/profile_images/1437747193234944002/a9f_91G8_400x400.jpg", name: "ガレバレ", message: "たぶん、みんなで使えます" }} sendTo={null} send={null} />
+                <Chat user={{ img: Icon, name: "ガレバレ", message: "たぶん、リアルタイムなチャットです" }} sendTo={null} send={null} />
+                <Chat user={{ img: Icon, name: "ガレバレ", message: "たぶん、一覧で表示されます" }} sendTo={null} send={null} />
+                <Chat user={{ img: Icon, name: "ガレバレ", message: "たぶん、みんなで使えます" }} sendTo={null} send={null} />
             </PreviewChat>
         </div>
     );

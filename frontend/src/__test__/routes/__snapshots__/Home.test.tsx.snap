@@ -35,7 +35,7 @@ exports[`HomeRender 1`] = `
           <img
             alt="画像"
             class="sc-dlfnuX ctYUkh"
-            src="https://pbs.twimg.com/profile_images/1437747193234944002/a9f_91G8_400x400.jpg"
+            src=""
           />
           <div
             class="sc-hKgJUU hJkrTx"
@@ -59,7 +59,7 @@ exports[`HomeRender 1`] = `
           <img
             alt="画像"
             class="sc-dlfnuX ctYUkh"
-            src="https://pbs.twimg.com/profile_images/1437747193234944002/a9f_91G8_400x400.jpg"
+            src=""
           />
           <div
             class="sc-hKgJUU hJkrTx"
@@ -83,7 +83,7 @@ exports[`HomeRender 1`] = `
           <img
             alt="画像"
             class="sc-dlfnuX ctYUkh"
-            src="https://pbs.twimg.com/profile_images/1437747193234944002/a9f_91G8_400x400.jpg"
+            src=""
           />
           <div
             class="sc-hKgJUU hJkrTx"

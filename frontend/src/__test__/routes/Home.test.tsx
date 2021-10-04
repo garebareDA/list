@@ -2,6 +2,7 @@ import { render, fireEvent } from '@testing-library/react'
 import fetchMock, { MockResponseInit } from 'jest-fetch-mock';
 import Home from '../../routes/Home'
 
+jest.mock('socket.io-client')
 jest.mock('react-router', () => ({
     ...jest.requireActual('react-router'),
     useHistory: () => ({ push: jest.fn() })
