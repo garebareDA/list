@@ -1,4 +1,4 @@
-import Modal from 'react-modal'
+import * as Modal from 'react-modal'
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
