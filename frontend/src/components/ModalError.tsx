@@ -1,4 +1,4 @@
-const Modal = require('react-modal');
+import Modal from 'react-modal';
 import { useHistory } from 'react-router'
 import styled from 'styled-components';
 

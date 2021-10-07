@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 
 import Chat from '../components/Chat';
-
 import Icon from '../../image/garebaremin-export.png'
 
 function Home() {
