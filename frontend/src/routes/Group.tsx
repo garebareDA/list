@@ -78,8 +78,8 @@ function Group() {
     const SetUser = () => {
         const icon = localStorage.getItem(groupID + "/icon");
         const name = localStorage.getItem(groupID + "/name");
-        if (icon == null || icon == ""
-            || name == null || name == "") {
+        if (icon === null || icon === ""
+            || name === null || name === "") {
             setModal(true);
             return
         }
@@ -104,12 +104,13 @@ function Group() {
 
         socket.on("message", (msg: string) => {
             const user: User = JSON.parse(msg);
-            if (user.id == socket.id) return;
+            if (user.message === "") return;
+            if (user.id === socket.id) return;
             setUsers({ ...users, [user.id]: user });
         });
 
         socket.on("members", (id:string) => {
-            if (id == socket.id) return;
+            if (id === socket.id) return;
             socket.emit("message", JSON.stringify(user));
         });
     }
