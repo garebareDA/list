@@ -12,16 +12,11 @@ RUN echo "${USER}:work" | chpasswd
 SHELL ["/bin/bash", "-c"]
 
 RUN dpkg-divert --local --rename --add /sbin/initctl
-ADD my.cnf /etc/mysql/my.cnf
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get install -y
 RUN apt-get install -y git sudo curl gcc make
 RUN sudo apt-get install -y --no-install-recommends mariadb-server
-RUN sudo service mysql start
-RUN (/usr/bin/mysqld_safe &); sleep 3; echo "USE mysql;UPDATE user SET plugin='mysql_native_password' WHERE User='root';FLUSH PRIVILEGES;" | sudo mysql -u root
-RUN sudo service mysql restart
-
 
 RUN curl -O https://dl.google.com/go/go1.17.1.linux-amd64.tar.gz
 RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.1.linux-amd64.tar.gz
@@ -41,3 +36,7 @@ RUN npm install
 
 WORKDIR /home/${HOME}
 RUN go install github.com/rubenv/sql-migrate/...
+
+COPY startup.sh /startup.sh
+RUN chmod 744 /startup.sh
+CMD ["/startup.sh"]
