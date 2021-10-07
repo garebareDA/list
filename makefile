@@ -17,3 +17,7 @@ start-db:
 .PHONY:build
 build:
 	docker build . -t list
+
+.PHONY:docker-run
+docker-run:
+	docker run list
