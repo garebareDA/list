@@ -4,19 +4,20 @@ import (
 	"database/sql"
 	"fmt"
 	"time"
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 	"github.com/go-gorp/gorp"
 	"github.com/garebareDA/list/log"
+	"github.com/garebareDA/list/config"
 )
 
 func NewDB() (*gorp.DbMap, error) {
-	db, err := sql.Open("mysql", "root:@tcp(localhost:3306)/list?parseTime=true")
+	url := config.Database()
+	db, err := sql.Open("postgres", url)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open Mysql: %w", err)
 	}
 
-	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.MySQLDialect{Engine: "InnoDB", Encoding: "UTF8"}}
-
+	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.PostgresDialect{}}
 	db.SetMaxIdleConns(100)
 	db.SetMaxOpenConns(100)
 

@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`HomeRender 1`] = `
+<DocumentFragment>
+  <div>
+    <div
+      class="sc-kEjbQP cvYYPK"
+    >
+      <div
+        class="sc-fubCzh dFCHyE"
+      >
+         ListChat 
+      </div>
+      <input
+        class="sc-pGacB khYXTb"
+        maxlength="32"
+        placeholder="ルーム名"
+      />
+      <button
+        class="sc-jrAFXE bEXVrr"
+        disabled=""
+      >
+        ルームを作成
+      </button>
+    </div>
+    <div
+      class="sc-iqHYmW gpXrTA"
+    >
+      <div
+        class="sc-bdfBQB gcvDuM"
+      >
+        <div
+          class="sc-gsTEea fIwExb"
+        >
+          <img
+            alt="画像"
+            class="sc-dlfnuX ctYUkh"
+            src=""
+          />
+          <div
+            class="sc-hKgJUU hJkrTx"
+          >
+            ガレバレ
+          </div>
+        </div>
+        <div
+          class="sc-eCstlR gAGJiT"
+        >
+          たぶん、リアルタイムなチャットです
+        </div>
+        <div />
+      </div>
+      <div
+        class="sc-bdfBQB gcvDuM"
+      >
+        <div
+          class="sc-gsTEea fIwExb"
+        >
+          <img
+            alt="画像"
+            class="sc-dlfnuX ctYUkh"
+            src=""
+          />
+          <div
+            class="sc-hKgJUU hJkrTx"
+          >
+            ガレバレ
+          </div>
+        </div>
+        <div
+          class="sc-eCstlR gAGJiT"
+        >
+          たぶん、一覧で表示されます
+        </div>
+        <div />
+      </div>
+      <div
+        class="sc-bdfBQB gcvDuM"
+      >
+        <div
+          class="sc-gsTEea fIwExb"
+        >
+          <img
+            alt="画像"
+            class="sc-dlfnuX ctYUkh"
+            src=""
+          />
+          <div
+            class="sc-hKgJUU hJkrTx"
+          >
+            ガレバレ
+          </div>
+        </div>
+        <div
+          class="sc-eCstlR gAGJiT"
+        >
+          たぶん、みんなで使えます
+        </div>
+        <div />
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;

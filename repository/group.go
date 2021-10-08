@@ -24,7 +24,7 @@ func (r *GroupRepository) Insert(group *entity.Group) error {
 }
 
 func (r *GroupRepository)FindByID(groupID string) (*entity.Group, error) {
-	query := "SELECT * FROM `groups` WHERE id = ?"
+	query := "SELECT * FROM groups WHERE id = $1"
 
 	group := &entity.Group{}
 	if err := r.dbmap.SelectOne(group, query, groupID); err != nil {

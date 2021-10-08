@@ -1,6 +1,5 @@
 .PHONY:run
 run:
-	npm run build --prefix frontend
 	go run main.go
 
 .PHONY: create-db
@@ -13,3 +12,11 @@ drop-db:
 .PHONY: start-db
 start-db:
 	service mysql start
+
+.PHONY:build
+build:
+	docker build . -t list
+
+.PHONY:docker-run
+docker-run:
+	docker run list

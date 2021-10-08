@@ -1,5 +1,5 @@
 development:
-    dialect: mysql
-    datasource: root@/list?parseTime=true
+    dialect: postgres
+    datasource: ${DATABASE_URL}
     dir: migrations
     table: migrations
