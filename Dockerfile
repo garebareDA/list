@@ -16,7 +16,6 @@ ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && apt-get install -y
 RUN apt-get install -y git sudo curl gcc make
-RUN sudo apt-get install -y --no-install-recommends mariadb-server
 
 RUN curl -O https://dl.google.com/go/go1.17.1.linux-amd64.tar.gz
 RUN rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.1.linux-amd64.tar.gz
@@ -24,15 +23,8 @@ ENV PATH $PATH:/usr/local/go/bin
 ENV PATH $PATH:${HOME}/go/bin
 RUN go version
 
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
-RUN apt install -y nodejs
-RUN npm install npm@latest -g
-
 WORKDIR /home/${HOME}
 COPY . .
-
-WORKDIR /home/${HOME}/frontend
-RUN npm install
 
 WORKDIR /home/${HOME}
 RUN go install github.com/rubenv/sql-migrate/...

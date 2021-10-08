@@ -9,3 +9,12 @@ func Port() string {
 	}
 	return ":" + port
 }
+
+func Database() string {
+	url := os.Getenv("DATABASE_URL")
+	if url == "" {
+		return ""
+	}
+
+	return url;
+}

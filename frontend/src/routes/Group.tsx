@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 
@@ -10,7 +10,6 @@ import ModalInput from '../components/ModalInput';
 import ModalError from '../components/ModalError'
 
 interface User {
-    id: string,
     name: string,
     icon: string,
     room: string,
@@ -29,15 +28,20 @@ function Group() {
     const [errorMessage, setErrorMessage] = useState("");
     const { groupID } = useParams<{ groupID: string }>();
     const [users, setUsers] = useState<{ [key: string]: User }>({});
+    const socketRef = useRef(socket);
 
     useEffect(() => {
-        socket.on("error", (err: any) => {
+        socketRef.current.on("connect", () => {
+            console.log("connect");
+        });
+
+        socketRef.current.on("error", (err: any) => {
             console.error(err)
             setErrorMessage("接続エラー");
             setError(true);
         })
 
-        socket.on("disconnect", (msg: any) => {
+        socketRef.current.on("disconnect", (msg: any) => {
             console.log(msg)
         })
 
@@ -66,7 +70,6 @@ function Group() {
     const sendMessage = () => {
         if (message.length > 128) return;
         const user: User = {
-            id: socket.id,
             name: name,
             icon: icon,
             room: groupID,
@@ -88,29 +91,33 @@ function Group() {
         setIcon(icon);
         setName(name.slice(0, 28));
         const user: User = {
-            id: socket.id,
             name: name.slice(0, 28),
             icon: icon,
             room: groupID,
             message: message,
         }
+        socketRef.current.emit("join", JSON.stringify(user));
 
-        socket.emit("join", JSON.stringify(user));
-
-        socket.on("quit", (msg: string) => {
-            delete users[msg]
-            setUsers(users);
+        socketRef.current.on("quit", (msg: string) => {
+            setUsers((users) => {
+                delete users[msg]
+                return users;
+            } );
         });
 
-        socket.on("message", (msg: string) => {
+        socketRef.current.on("message", (msg: string, id:string) => {
+            if(id === socketRef.current.id) return;
+            if(!id) return;
             const user: User = JSON.parse(msg);
-            if (user.message === "") return;
-            if (user.id === socket.id) return;
-            setUsers({ ...users, [user.id]: user });
+
+            if(user.name === "" || user.icon == "") return;
+            setUsers((users) => {
+                return {...users, [id]:user}
+            });
         });
 
-        socket.on("members", (id:string) => {
-            if (id === socket.id) return;
+        socketRef.current.on("members", (id: string) => {
+            if(id === socketRef.current.id) return;
             socket.emit("message", JSON.stringify(user));
         });
     }
@@ -141,12 +148,10 @@ function Group() {
                 }
 
                 {
-                    modal && Object.keys(users).length > 0
-                        ? <div />
-                        : Object.keys(users).map((key, index) => {
-                            const user = users[key];
-                            return <Chat user={{ img: user.icon, name: user.name, message: user.message }} sendTo={null} send={null} />
-                        })
+                    Object.keys(users).map((key, index) => {
+                        const user = users[key];
+                        return <Chat user={{ img: user.icon, name: user.name, message: user.message }} sendTo={null} send={null} />
+                    })
                 }
             </FlextContainerChat>
         </div>

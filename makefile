@@ -1,6 +1,5 @@
 .PHONY:run
 run:
-	npm run build --prefix frontend
 	go run main.go
 
 .PHONY: create-db
